@@ -1,0 +1,45 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Product;
+import com.example.demo.repository.ProductRepository;
+
+@Service
+public interface ProductService {
+	
+	
+  static final ProductRepository repository = null;
+ 
+  public default Product saveProduct(Product product) {
+	  return repository.save(product);
+  }
+  public default List<Product> saveProducts(List<Product> products) {
+	  return repository.saveAll(products);
+  }
+  public default List<Product> getProducts(){
+	  return repository.findAll();
+  }
+  public default Product getProductById(int id){
+	  return repository.findById(id).orElse(null);
+  }
+  public default Product getProductByName(String name){
+	  return repository.findByName(name);
+  }
+  public default String deleteProduct(int id) {
+	  repository.deleteById(id);
+	  return "product removed is " +id;
+  }
+  public default Product updateProduct(Product product) {
+	Product existingProduct=repository.findById(product.getId()).orElse(null);
+	existingProduct.setName(product.getName);
+	existingProduct.setPrice(product.getPrice);
+	existingProduct.setQuantity(product.getQuantity);
+	return repository.save(existingProduct);
+	
+  }
+ 
+}
